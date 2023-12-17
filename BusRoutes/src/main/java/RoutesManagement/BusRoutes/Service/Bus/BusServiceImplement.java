@@ -5,6 +5,8 @@ import RoutesManagement.BusRoutes.dao.Bus.BusDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class BusServiceImplement implements BusService{
 
@@ -24,7 +26,7 @@ public class BusServiceImplement implements BusService{
 
     @Override
     public Bus updateBus(String id, Bus bus) throws Exception {
-        busValidation(bus);
+        updateBusValidation(bus);
      return busDao.updateBus(bus);
     }
 
@@ -34,10 +36,22 @@ public class BusServiceImplement implements BusService{
     }
 
     private void busValidation(Bus bus) throws Exception {
+        if(bus.getId()!=null && busDao.getBus(bus.getId())!=null)
+        {
+            throw new Exception("Bus with id : "+bus.getId()+" already exists");
+        }
         if (busDao.findByBusNumber(bus.getBusNumber()).isPresent()) {
             throw new Exception("Bus with number : " + bus.getBusNumber() + " already exists");
         }
-        if(!bus.getBusType().equals("ORDINARY") || !bus.getBusType().equals("DELUXE")){
+        if(!bus.getBusType().equals("ORDINARY") && !bus.getBusType().equals("DELUXE")){
+            throw new Exception("Bus can either be ORDINARY or DELUXE");
+        }
+    }
+    private void updateBusValidation(Bus bus) throws Exception {
+        if (busDao.findByBusNumber(bus.getBusNumber()).isPresent() && !Objects.equals(busDao.findByBusNumber(bus.getBusNumber()).get().getId(), bus.getId())) {
+            throw new Exception("Bus with number : " + bus.getBusNumber() + " already exists");
+        }
+        if(!bus.getBusType().equals("ORDINARY") && !bus.getBusType().equals("DELUXE")){
             throw new Exception("Bus can either be ORDINARY or DELUXE");
         }
     }

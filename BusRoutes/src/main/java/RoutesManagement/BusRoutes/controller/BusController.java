@@ -14,7 +14,7 @@ public class BusController {
     BusService busService;
 
     @PostMapping("/buses")
-    public ResponseEntity<?> getBus(@RequestBody Bus bus) {
+    public ResponseEntity<?> createBus(@RequestBody Bus bus) {
         try {
             return ResponseEntity.ok(busService.addBus(bus));
         } catch (Exception e) {
@@ -35,6 +35,7 @@ return ResponseEntity.badRequest().body(e.getMessage());
     public ResponseEntity<?> modifyBusDetails(@PathVariable String id,
                                                      @RequestBody  Bus bus) {
         try {
+            bus.setId(id);
             return ResponseEntity.ok(busService.updateBus(id, bus));
         } catch (Exception e) {
           return ResponseEntity.badRequest().body(e.getMessage());
@@ -42,7 +43,7 @@ return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @DeleteMapping("/buses/{id}")
-    public ResponseEntity<?> deleteBus(String id) {
+    public ResponseEntity<?> deleteBus(@PathVariable  String id) {
         try {
             busService.deleteBus(id);
         } catch (Exception e) {

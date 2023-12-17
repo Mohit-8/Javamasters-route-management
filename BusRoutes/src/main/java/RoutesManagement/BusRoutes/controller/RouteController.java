@@ -14,7 +14,7 @@ public class RouteController {
     RouteService routeService;
 
     @GetMapping("/route/{id}")
-    public ResponseEntity<?> getRoute(String id) {
+    public ResponseEntity<?> getRoute(@PathVariable String id) {
 
         try {
             return ResponseEntity.ok(routeService.getRoute(id));
@@ -45,7 +45,7 @@ public class RouteController {
     }
 
     @PutMapping("/route/{id}")
-    public ResponseEntity<?> updateRoute(String id, @RequestBody  Route route) {
+    public ResponseEntity<?> updateRoute(@PathVariable String id, @RequestBody  Route route) {
         try {
             return ResponseEntity.ok(routeService.updateRoute(id, route));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class RouteController {
     }
 
     @DeleteMapping("/route/{id}")
-    public ResponseEntity<?> deleteRoute(String id) {
+    public ResponseEntity<?> deleteRoute(@PathVariable String id) {
 
         try {
             routeService.deleteRoute(id);

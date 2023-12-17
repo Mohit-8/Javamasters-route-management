@@ -35,6 +35,7 @@ public class RouteServiceImplement implements RouteService{
 
     @Override
     public Route updateRoute(String id, Route route) throws Exception {
+        route.setId(id);
         validateUpdateRouteRequest(route);
         return routeDaoService.updateRoute(route);
 
@@ -67,7 +68,7 @@ public class RouteServiceImplement implements RouteService{
         }
 
         boolean conflictExists = routeEntities.stream().anyMatch(existingRoute ->
-                existingRoute.getWeekday().name().equals(route.getWeekday()) &&
+                existingRoute.getWeekday().equals(route.getWeekday()) &&
                         ((timeEqualOrAfter(route.getStartTime(), existingRoute.getStartTime()) && timeEqualOrBefore(route.getStartTime(), existingRoute.getEndTime())) ||
                                 (timeEqualOrAfter(route.getEndTime(), existingRoute.getStartTime()) && timeEqualOrBefore(route.getEndTime(), existingRoute.getEndTime())))
         );
